@@ -1,23 +1,21 @@
 [package]
-name = "bonsai-starter-methods-guest"
+name = "taproot-derive"
 version = "0.1.0"
 edition = "2021"
 
 [[bin]]
-name = "fibonacci"
-path = "src/bin/fibonacci.rs"
+name = "taproot"
+path = "src/main.rs"
+
+[lib]
+name = "taproot_derive"
+path = "src/lib.rs"
 
 [dependencies]
 ethabi = { version = "18.0", default-features = false }
 # Directly import radium to silence warning about unused patch. See https://github.com/risc0/risc0/issues/549
-radium = "=0.7.1"
+# radium = "=0.7.1"
 risc0-zkvm = { git = "https://github.com/risc0/risc0", branch = "release-0.18", default-features = false, features = ["std"] }
-
-[patch.crates-io]
-radium = { git = "https://github.com/bitvecto-rs/radium", rev = "723bed5abd75994ee4b7221b8b12c9f4e77ce408" }
-
-[profile.release]
-lto = true
-opt-level = 3
-
-[workspace]
+libsecp256k1 = { package = "libsecp256k1", git = "https://github.com/paritytech/libsecp256k1.git", default-features = false, features = ["hmac", "static-context"] }
+bech32 = {git = "https://github.com/rust-bitcoin/rust-bech32.git"}
+hex = "0.4.2"

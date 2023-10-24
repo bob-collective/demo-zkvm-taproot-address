@@ -1,0 +1,21 @@
+[package]
+name = "taproot-prover"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+bonsai-ethereum-relay = { workspace = true }
+methods = { workspace = true }
+risc0-zkvm  = { workspace = true }
+
+hex = "0.4.3"
+bitcoincore-rpc = { git = "https://github.com/interlay/rust-bitcoincore-rpc", branch = "list-descriptors" }
+regex = "1.4.3"
+libsecp256k1 = { package = "libsecp256k1", git = "https://github.com/paritytech/libsecp256k1.git", default-features = false, features = ["hmac", "static-context"] }
+bech32 = {git = "https://github.com/rust-bitcoin/rust-bech32.git"}
+sha256 = "1.4.0"
+ethers = { version = "2.0", features = ["rustls", "ws"] }
+tokio = { version = "1.19", features = ["full", "sync"] }
+clap = { version = "4.4", features = ["derive", "env"] }
+taproot-derive = { path = "../methods/guest" }

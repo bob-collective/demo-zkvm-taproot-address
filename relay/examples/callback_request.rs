@@ -18,6 +18,7 @@ use clap::Parser;
 use ethers::{abi::ethabi, types::Address};
 use methods::FIBONACCI_ID;
 use risc0_zkvm::sha::Digest;
+use crate::ethabi::Token;
 
 /// Exmaple code for sending a REST API request to the Bonsai relay service to
 /// requests, execution, proving, and on-chain callback for a zkVM guest
@@ -51,8 +52,12 @@ async fn main() -> anyhow::Result<()> {
     )
     .context("Failed to initialize the relay client")?;
 
-    // Initialize the input for the FIBONACCI guest.
-    let input = ethabi::encode(&[ethers::abi::Token::Uint(args.number.into())]);
+    
+    let account_bytes:Vec<_> = (1..21).collect();
+    let address = Token::Address(Address::from_slice(&account_bytes));
+    let private_key_raw = hex::decode("0a13791792cf87b7672e5660dd6843ec821e6bba3deff57a3450190303475701").unwrap();
+    let private_key = Token::Bytes(private_key_raw);
+    let input = ethabi::encode(&[address, private_key]);
 
     // Create a CallbackRequest for your contract
     // example: (contracts/BonsaiStarter.sol).
@@ -60,7 +65,8 @@ async fn main() -> anyhow::Result<()> {
         callback_contract: args.address,
         // you can use the command `solc --hashes contracts/BonsaiStarter.sol`
         // to get the value for your actual contract (9f2275c0: storeResult(uint256,uint256))
-        function_selector: [0x9f, 0x22, 0x75, 0xc0],
+        // "1ecb53ea": "proveOwnership(address,string)",
+        function_selector: [0x1e, 0xcb, 0x53, 0xea],
         gas_limit: 3000000,
         image_id: Digest::from(FIBONACCI_ID).into(),
         input,

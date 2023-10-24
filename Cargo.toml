@@ -1,5 +1,5 @@
 [workspace]
-members = ["methods", "relay"]
+members = ["methods", "relay", "taproot-prover"]
 resolver = "2"
 
 [workspace.dependencies]
