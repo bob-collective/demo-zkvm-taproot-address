@@ -19,13 +19,15 @@ jobs:
   integration:
     name: local mock relay integration tests
     runs-on: [self-hosted, prod, Linux, X64]
+    # SAF-0002: do not run untrusted fork-PR code on the shared self-hosted runner fleet
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       # This is a workaround from: https://github.com/actions/checkout/issues/590#issuecomment-970586842
       - name: checkout dummy commit (submodule bug workaround)
         run: "git checkout -f $(git -c user.name=x -c user.email=x@x commit-tree $(git hash-object -t tree /dev/null) < /dev/null) || :"
 
       - name: clone repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.6.0
         with:
           submodules: recursive
 
@@ -47,13 +49,15 @@ jobs:
   e2e:
     name: end 2 end tests
     runs-on: [self-hosted, prod, Linux, X64]
+    # SAF-0002: do not run untrusted fork-PR code on the shared self-hosted runner fleet
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       # This is a workaround from: https://github.com/actions/checkout/issues/590#issuecomment-970586842
       - name: checkout dummy commit (submodule bug workaround)
         run: "git checkout -f $(git -c user.name=x -c user.email=x@x commit-tree $(git hash-object -t tree /dev/null) < /dev/null) || :"
 
       - name: clone repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.6.0
         with:
           submodules: recursive
 
